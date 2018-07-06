@@ -16,11 +16,18 @@ class Counter extends Component {
     }
 
     onClickIncrementButton(){
-        this.setState({count:this.state.count+1});
+        this.updateCount(true);
     }
 
     onClickDecrementButton(){
-        this.setState({count:this.state.count-1});
+        this.updateCount(false);
+    }
+
+    updateCount(isIncrement){
+        const previosValue = this.state.count;
+        const newValue = isIncrement? previosValue+1:previosValue-1;
+        this.setState({count:newValue});
+        this.props.onUpdate(newValue,previosValue);
     }
 
     componentWillMount() {
@@ -52,10 +59,12 @@ class Counter extends Component {
 }
 Counter.propTypes = {
     caption: PropType.string.isRequired,
-    initValue: PropType.number
+    initValue: PropType.number,
+    onUpdate:PropType.func
 };
 
 Counter.defaultProps = {
-    initValue: 0
+    initValue: 0,
+    onUpdate:f=>f
 };
 export default Counter;
